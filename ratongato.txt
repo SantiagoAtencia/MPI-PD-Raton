@@ -1,0 +1,31 @@
+funcion general que te genera el laberinto
+	(dentro lanzamos todos los porcesos)
+	todos los procesos hacen un scatter
+		funcion crear Laberinto
+	gather al proceso root
+	
+solo el proceso 0 llama a una función que comprueba
+	imprime el laberinto
+el 0 ejecuta rutina raton
+el 1 ejecuta rutina gato
+
+rutina raton:
+	
+	loop:
+		lee cordenadas gato
+		checkeo !victoria{
+		se mueve
+		}
+		pinta estado
+		espera
+
+rutina gato:
+	loop:
+		comprueba si hemos acabao
+		se mueve
+		envia posicion
+		espera
+	
+
+
+	
