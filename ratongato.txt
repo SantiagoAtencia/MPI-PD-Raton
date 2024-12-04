@@ -26,6 +26,83 @@ rutina gato:
 		envia posicion
 		espera
 	
+______________________________________
 
+Lo que yo haría:
+ - Programa principal
+      lanza los procesos, a partir de aquí, es paralelo:
+      Coprobar si el número de filas es múltiplo del número de procesos, 
+	Si no: se sale, y el proceso 0 imprime mensaje.
+   Genera el laberinto
+   Postproceso del laberinto	
+   Lanza la carrera.
+
+___
+  Generar laberinto:	
+	Cada proceso(recordar que se llama desde el main, que ya es paralelo) crea su submatriz.
+	MAtriz de char,(=byte) que sea 0 o 1
+	La rellena con muros aleatorios
+	
+	Se juntan haciendo gather y pasandola al proceso 0
+
+____
+   Postproceso:
+	Si soy el proceso 0:
+		De momento dejo la matriz igual, ya lo mejoraremos	
+		
+	Si no, nada
+	
+_____
+LAnza la carrera():
+
+	Si soy el 0: LAnza ratón
+	Si soy el 1: lanza gato
+______
+Lanza ratón():
+	Le paso el labeinto al proceso 1.
+	Inicializo posición
+	bucle:
+		lee cordenadas gato
+		Pinta estado
+		checqueo victoria?	
+			Envia mensaje al 1, 
+			imprime
+			termina
+		chequeo comido
+			Envia mensaje al 1, 
+			imprime
+			termina
+		mueve_ratón
+		pinta estado
+		espera (velocidad de ratón)
+			
+
+_____
+Lanza gato():
+	Recojo el laberinto del proceso 2.
+	Inicializo posición
+	bucle:
+		lee cordenadas gato
+		Pinta estado
+		recibo posibles mensajes del raton y para si lo manda
+		mueve_gato
+		pinta estado
+		espera (velocidad de gato)
+
+____
+mueve_ratón():
+	el ratón guarda su poscición y la ultima dirección de movimiento
+	repetir:
+		nueva_dirección_Aleatoria(útima direccion)
+ 	repite si la dirección no es permitda
+	actualiza posición y dirección
+
+
+______
+nueva_dirección_Aleatoria(útima direccion)
+	hay que obtneer una de las 4 direcciones posibles, pero que la anterior direccion tenga un 80% de 
+   probabilidad, y las otras 3, equiprobables, con el 20% restante.
+
+      
 
 	
