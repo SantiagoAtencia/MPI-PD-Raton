@@ -58,6 +58,40 @@ int main(int argc,char *argv[]) {
     MPI_Gatherv(recvbuf,recvcount,MPI_INT,sendbuf,sendcounts,desplazamiento,MPI_INT,0,MPI_COMM_WORLD);
 
     if(rank == 0){
+
+                // Corrección de la matriz generada
+
+        // 1. Asegurar que las esquinas sean 1
+        sendbuf[0] = 1;                                  // Esquina superior izquierda
+        sendbuf[SIZE - 1] = 1;                           // Esquina superior derecha
+        sendbuf[(SIZE - 1) * SIZE] = 1;                  // Esquina inferior izquierda
+        sendbuf[(SIZE - 1) * SIZE + SIZE - 1] = 1;       // Esquina inferior derecha
+
+        // 2. Corregir filas para evitar ceros consecutivos
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE - 1; ++j) {
+                if (sendbuf[i * SIZE + j] == 0 && sendbuf[i * SIZE + j + 1] == 0) {
+                    sendbuf[i * SIZE + j + 1] = 1; // Corregir para romper la secuencia de ceros
+                }
+            }
+        }
+
+        // 3. Asegurar que cada columna tenga al menos un 1
+        for (int j = 0; j < SIZE; ++j) {
+            int tiene_uno = 0;
+            for (int i = 0; i < SIZE; ++i) {
+                if (sendbuf[i * SIZE + j] == 1) {
+                    tiene_uno = 1;
+                    break;
+                }
+            }
+            if (!tiene_uno) {
+                // Si no hay un 1 en la columna, establecer 1 en la primera fila de esa columna
+                sendbuf[j] = 1;
+            }
+        }
+
+
         for(int i = 0; i < SIZE; ++i){
             for(int j = 0; j < SIZE; ++j){
                 printf("%d ", sendbuf[i * SIZE + j]);
