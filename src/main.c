@@ -166,10 +166,11 @@ int main(int argc, char** argv) {
         print_jump_maze(final_maze);
     }
 
-  
+  /*ADVERTENCIA HE COMENTADO ESTO PARA LA PRUEBA DEL LABERINTO SE TIENE QUE DESCOMENTAR PARA CUANDO SE EJECUTE EL MOVIMIENTO DEL GATO Y EL RATÓN
     if (rank == 0) game_routine();
     if (rank == 1) mouse_routine();
     if (rank == 2) cat_routine();   
+  */
 
 
     //free the memory allocated for the final maze:
