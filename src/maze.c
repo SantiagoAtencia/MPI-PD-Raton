@@ -20,7 +20,7 @@ bool is_inside_maze(Maze m, Coords c) {
     return c.x >= 0 && c.x < m.width && c.y >= 0 && c.y < m.height;
 }
 
-// whwther the cell is a path and inside the maze
+// whether the cell is a path and inside the maze
 bool is_path(Maze m, Coords c) {
     return is_inside_maze(m, c) && m.cells[c.y * m.width + c.x];
 }
@@ -55,27 +55,50 @@ void fill_maze_random(Maze m,int rank) {
 
 /**
  * Print the maze to the console
- * if cursor_back is true, the cursor will be moved back to the top of the maze after printing
+ * the cursor will be moved back to the top of the maze after printing
+ * 
+ * NOTICE: each cell is printed with 2 spaces.
+ * 
  */
-void print_maze(Maze m, bool cursor_back) {
-    if (cursor_back) printf(SAVE_CURSOR_POS);
+void print_maze(Maze m) {
+    printf(SAVE_CURSOR_POS);
     for (int i = 0; i < m.height; i++) {
         printf(MAZE_COLORS);
         for (int j = 0; j < m.width; j++) {
-            printf ("%s", m.cells[i * m.width + j] ? " ":"╬");
+            printf ("%s", m.cells[i * m.width + j] ? "  ":"╬╬");
         }
         printf(RESET_COLOR "\n");
     }
     printf("maze size: %d x %d\n", m.height, m.width);
-    if (cursor_back) printf(RESTORE_CURSOR_POS);
+    printf(RESTORE_CURSOR_POS);
 
+}
+
+// moves the cursor to the next line below the maze
+void print_jump_maze(Maze m){
+    printf("\033[%dB", m.height + 1);
 }
 
 //print a char at the given position
 // it is suposed the cursor is at the top of the maze
 // the cursor will be moved back to the top of the maze after printing
-void print_char_in_maze(Maze m, Coords c, char ch) {
-    printf("\033[%d;%dH", c.y + 1, c.x + 1);
-    printf("%c", ch);
-    printf("\033[%dA", m.height + 1);
+// NOTICE: each cell is printed with 2 spaces:
+// ch can be a string with 2 characters
+
+/**
+ * Print a character at the given position in the maze
+ * the cursor will be moved back to the top of the maze after printing
+ * It is supposed the cursor is at the top of the maze
+ * 
+ * NOTICE: each cell is printed with 2 spaces.
+ * ch can be a string with 2 characters, e.g.: "  "
+ *  or a unicode wide character, e.g.: "🐈"
+ * 
+ */
+void print_char_in_maze(Maze m, Coords c, const char* ch) {
+    printf(SAVE_CURSOR_POS);
+    if (c.x > 0) printf("\033[%dC", c.x*2); // each cell is printed with 2 spaces
+    if (c.y > 0) printf("\033[%dB", c.y);
+    printf(MAZE_COLORS "%s" RESET_COLOR, ch);
+    printf(RESTORE_CURSOR_POS);
 }

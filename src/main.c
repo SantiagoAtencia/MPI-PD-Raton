@@ -8,15 +8,16 @@
 #define MAX_DIM 100
 
 
-//🐁🐁🐁🐁🐁🐭🐭🐭🐈🐈🐱🐱🕱🕱☠☠
+//☠🐁🐁🐁🐁🐭🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
 //╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
-//╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬🐈╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
+//╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬🐈╬╬╬╬🐁╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
 //xxxxxxxxxxxxxxxx🐈xxxx╬╬    ╬╬╬╬╬╬╬  ╬╬╬╬╬╬
 // ██████
 // █    █
 // ████  ▓▓▓
 // █   ▓█ ▓▓▓▓🐁 █🐁
 // ███▓▓▓▓ ▓ ▓ █ █ █ ▓ ▓▓▓▓▓
+//🐁🐁🐁🐁🐁🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
 
 
 
@@ -90,11 +91,53 @@ Maze merge_sub_mazes(Maze sub_maze, int rank, int num_procs) {
     int sub_maze_size = sub_maze.width * sub_maze.height;
     // gather all sub-mazes into the final maze:
     MPI_Gather(sub_maze.cells, sub_maze_size, MPI_CHAR, final_maze.cells, sub_maze_size, MPI_CHAR, 0, MPI_COMM_WORLD);
+    // the other processes will return an empty maze, but correct dimensions
+    final_maze.width = sub_maze.width;
+    final_maze.height = sub_maze.height * num_procs;
     return final_maze; // Only rank 0 will have the final maze
 }
 
+// Game routine:
+// Send the maze to the  mouse and cat
+// start a "timer"
+// loop:
+//    waitfor messagw from mouse or cat
+//    if message from mouse: update position of mouse
+//     print the mouse (erase previous position and print the new position)
+//    if message from cat: idem
+
+///   check if the mouse is in the same position as the cat
+//    check if th mouse is at goal cell.
+//    check if time is up
+
+//    if any of the above conditions is true:
+//        send a message to the cat and mouse to stop
+//        print the winner
+//        break the loop
+//    else: print the time left
 
 
+//mouse routine:
+// receive the maze
+// initialize the position of the mouse
+// loop:
+//    wait for a while, constant time
+//    check if a there is a message from the game routine
+//      if the message is to stop: break the loop
+//    update the position of the mouse
+//    send the new position to the game routine
+
+//cat routine: idem.
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////
 int main(int argc, char** argv) {
 // Print the Unicode character ⯃
     printf("Unicode character: ⯃\n");
@@ -112,16 +155,24 @@ int main(int argc, char** argv) {
     Maze final_maze = merge_sub_mazes(sub_maze, rank, num_procs);   // Only rank 0 will have the final maze
 
     if (rank == 0) {
-        print_maze(final_maze, false); // Print the final maze
+        print_maze(final_maze); // Print the final maze
 
+        print_char_in_maze(final_maze, (Coords){0, 0}, "🐈"); // Print the start point
+        print_char_in_maze(final_maze, (Coords){22-1,8-1}, "🐈"); // Print the end point
+        print_char_in_maze(final_maze, (Coords){22-1,8-1}, "  "); // Print the end point
+        
+        print_jump_maze(final_maze);
     }
   
+    if (rank == 0) game_routine();
+    if (rank == 1) mouse_routine();
+    if (rank == 2) cat_routine();
+    
+
+
   
 
 
-
-
-    // Maze building logic goes here
 
     //free the memory allocated for the final maze:
     if (rank == 0) free_maze(final_maze);
