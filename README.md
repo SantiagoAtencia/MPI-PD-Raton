@@ -2,7 +2,7 @@
 
 de claudio @clamaveruma
 
-Versión "navidad"
+## Versión "navidad"
 
 El programa está desarrollado en codespaces. Así no hay que configurar nada localmente. Si se quiere, se puede pasar a linux, tal cual.
 Tiene un Makefile. Así que con 
@@ -21,7 +21,7 @@ En la parte de la carrera hay 3 procesos:
  - rank 2. Gato
 
 *El controlador del juego:*
-  - Le pasa el laberinto a los animales.
+```  - Le pasa el laberinto a los animales.
   - Mantiene una copia local de las posiciones de los animales
   - Bucle:
     - Espera mensaje de algún animal (receive bloqueante)
@@ -34,13 +34,14 @@ En la parte de la carrera hay 3 procesos:
         - Salir  
     - En otro caso: imprimir tiempo restante
     - fin de bucle 
-
+```
 *rutina de ratón* ( gato: idem)
- - recive el laberinto
+``` - recive el laberinto
  - bucle:
      - Espera un tiempo fijo (sleep)
      - Si hay un mensaje del controlador de juego: salir del bucle
      - Actualiza su posición
      - Envia posición a controlador del juego
      - fin de bucle
+```
 
