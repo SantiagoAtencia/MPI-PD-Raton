@@ -53,6 +53,13 @@ void fill_maze_random(Maze m,int rank) {
     }
 }
 
+Coords maze_SE_corner(Maze m) {
+    return (Coords){m.width - 1, m.height - 1};
+}
+
+Coords maze_NE_corner(Maze m) {
+    return (Coords){m.width - 1, 0};
+}
 /**
  * Print the maze to the console
  * the cursor will be moved back to the top of the maze after printing

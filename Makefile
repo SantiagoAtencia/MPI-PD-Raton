@@ -9,7 +9,7 @@ SRC_DIR = src
 INC_DIR = include
 
 # Source files
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/maze.c
+SRC = $(SRC_DIR)/*.c
 
 # Include directories
 INCLUDES = -I$(INC_DIR)

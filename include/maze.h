@@ -23,6 +23,8 @@ typedef struct Coords {
 Maze create_maze(int width, int height);
 void free_maze(Maze m);
 void fill_maze_random(Maze m,int rank);
+Coords maze_SE_corner(Maze m);
+Coords maze_NE_corner(Maze m);
 
 void print_maze(Maze m);
 void print_jump_maze(Maze m);
