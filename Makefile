@@ -2,10 +2,21 @@
 CC = mpicc
 
 # Executable name
-EXEC = main
+EXEC = maze_race
+
+# Source and include directories
+SRC_DIR = src
+INC_DIR = include
 
 # Source files
-SRC = $(EXEC).c
+<<<<<<< HEAD
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/maze.c
+=======
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/maze.c $(SRC_DIR)/maze_corrector.c
+>>>>>>> 7ab18e4 (Añadido contenido de MPI-PD-Raton-clau a la rama clau)
+
+# Include directories
+INCLUDES = -I$(INC_DIR)
 
 # Number of processes
 NP = 4
@@ -20,7 +31,7 @@ all: $(EXEC)
 
 # Build target
 $(EXEC): $(SRC)
-	$(CC) -o $(EXEC) $(SRC)
+	$(CC) $(INCLUDES) -o $(EXEC) $(SRC)
 
 # Install target
 .PHONY: install
