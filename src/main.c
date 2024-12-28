@@ -3,10 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "maze.h"
-<<<<<<< HEAD
-=======
 #include "maze_corrector.h"
->>>>>>> 7ab18e4 (Añadido contenido de MPI-PD-Raton-clau a la rama clau)
 
 #define MIN_DIM 4
 #define MAX_DIM 100
@@ -159,10 +156,7 @@ int main(int argc, char** argv) {
     Maze final_maze = merge_sub_mazes(sub_maze, rank, num_procs);   // Only rank 0 will have the final maze
 
     if (rank == 0) {
-<<<<<<< HEAD
-=======
         correct_maze(&final_maze);
->>>>>>> 7ab18e4 (Añadido contenido de MPI-PD-Raton-clau a la rama clau)
         print_maze(final_maze); // Print the final maze
 
         print_char_in_maze(final_maze, (Coords){0, 0}, "🐈"); // Print the start point
@@ -171,23 +165,11 @@ int main(int argc, char** argv) {
         
         print_jump_maze(final_maze);
     }
-<<<<<<< HEAD
+
   
     if (rank == 0) game_routine();
     if (rank == 1) mouse_routine();
-    if (rank == 2) cat_routine();
-=======
-  /*
-    if (rank == 0) game_routine();
-    if (rank == 1) mouse_routine();
-    if (rank == 2) cat_routine();
-  */
->>>>>>> 7ab18e4 (Añadido contenido de MPI-PD-Raton-clau a la rama clau)
-    
-
-
-  
-
+    if (rank == 2) cat_routine();   
 
 
     //free the memory allocated for the final maze:
