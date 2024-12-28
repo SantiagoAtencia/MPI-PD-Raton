@@ -13,7 +13,7 @@ Además he puesto un "make install" para instalar el entorno si fuera necesario.
 
 La versión actual:
   - Genera unos sub-laberintos de forma aleatoria.
-  - Al juntarse se comprueban y corrige
+  - Al juntarse se comprueban y corrigen
 
 En la parte de la carrera hay 3 procesos:
  - rank 0. Es el controlador del juego
