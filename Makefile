@@ -9,7 +9,9 @@ SRC_DIR = src
 INC_DIR = include
 
 # Source files
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/maze.c $(SRC_DIR)/maze_corrector.c
+
+SRC = $(SRC_DIR)/*.c
+
 
 # Include directories
 INCLUDES = -I$(INC_DIR)
@@ -20,6 +22,7 @@ NP = 4
 # Maze dimensions:
 ROWS = 22
 COLS = 8
+TIME = 50
 
 # Default target
 .PHONY: all
@@ -42,7 +45,7 @@ install:
 # Run target
 .PHONY: run
 run: $(EXEC)
-	mpirun --oversubscribe -np $(NP) ./$(EXEC) $(ROWS) $(COLS)
+	mpirun --oversubscribe -np $(NP) ./$(EXEC) $(ROWS) $(COLS) $(TIME)
 
 # Clean target
 .PHONY: clean

@@ -12,8 +12,12 @@ ya lo ejecuta y copila si es necesario.
 Además he puesto un "make install" para instalar el entorno si fuera necesario. En el codespaces ya está todo instalado, lógicamente.
 
 La versión actual:
+
+  
   - Genera unos sub-laberintos de forma aleatoria.
   - Al juntarse se comprueban y corrigen
+
+
 
 En la parte de la carrera hay 3 procesos:
  - rank 0. Es el controlador del juego
