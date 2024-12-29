@@ -12,7 +12,7 @@
 #define MAX_DIM 100
 #define DEBUG 0
 
-int num_procs, rank; //global
+int num_procs, rank, play_time; //global
 
 //☠🐁🐁🐁🐁🐭🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
 //╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
@@ -36,7 +36,7 @@ void print_debug(const char* format, ...) {
 }
 
 void print_usage() {
-    printf("Usage: mpirun -np <num_processes> ./maze <width> <height>\n");
+    printf("Usage: mpirun -np <num_processes> ./maze <width> <height> <play time>\n");
     printf("Both dimensions must be between %d and %d.\n", MIN_DIM, MAX_DIM);
     printf("Height must be a multiple of the number of processes.\n");
 }
@@ -44,17 +44,18 @@ void print_usage() {
 /**
  * Reads and checks the input arguments.
  */
-void read_and_check_input(int argc, char** argv, int rank, int num_procs, int* width, int* height) {
+void read_and_check_input(int argc, char** argv, int rank, int num_procs, int* width, int* height, int* play_time) {
     int valid_input = 1;
 
     if (rank == 0) {
-        if (argc != 3) {
+        if (argc != 4) {
             print_usage();
             valid_input = 0;
         } else {
-            char *endptr1, *endptr2;
+            char *endptr1, *endptr2, *endptr3;
             *width = strtol(argv[1], &endptr1, 10);
             *height = strtol(argv[2], &endptr2, 10);
+            *play_time = strtol(argv[3], &endptr3, 10);
 
             if (*endptr1 != '\0' || *endptr2 != '\0' || 
                 *width < MIN_DIM || *width > MAX_DIM || 
@@ -120,7 +121,7 @@ void game_routine(Maze maze){
     print_debug("Maze sent to mouse and cat\n");
     // start a "timer"
     int start_time = time(NULL); //current time
-    int end_time = start_time + 100; //10 seconds
+    int end_time = start_time + play_time; //10 seconds
    
     Coords mouse_pos={0,0};
     Coords cat_pos=maze_SE_corner(maze);
@@ -215,8 +216,9 @@ int main(int argc, char** argv) {
     MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int width = 0, height = 0;
+    play_time = 0;
 
-    read_and_check_input(argc, argv, rank, num_procs, &width, &height);
+    read_and_check_input(argc, argv, rank, num_procs, &width, &height, &play_time);
 
     Maze sub_maze = generate_sub_maze(rank, num_procs, width, height);  // Each process
 
