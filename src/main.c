@@ -10,7 +10,7 @@
 
 #define MIN_DIM 4
 #define MAX_DIM 100
-#define DEBUG 1
+#define DEBUG 0
 
 int num_procs, rank; //global
 
@@ -135,9 +135,13 @@ void game_routine(Maze maze){
         print_debug("Waiting for message from mouse or cat\n");
         MPI_Recv(&received_pos, 1, MPI_2INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
         if (status.MPI_SOURCE == 1){
+            print_char_in_maze_r(maze, mouse_pos, "  "); //erase the previous position
+            print_char_in_maze_r(maze, received_pos, "🐁"); //print the new position
             mouse_pos = received_pos;
             print_debug("Mouse position received (%d,%d)\n", mouse_pos.x, mouse_pos.y);
         } else if (status.MPI_SOURCE == 2){
+            print_char_in_maze_r(maze, cat_pos, "  "); //erase the previous position
+            print_char_in_maze_r(maze, received_pos, "🐈"); //print the new position
             cat_pos = received_pos;
             print_debug("Cat position received (%d,%d)\n", cat_pos.x, cat_pos.y);
         }
@@ -158,7 +162,7 @@ void game_routine(Maze maze){
         }
         //print the time left TODO: print the time left
         
-        //print_after_maze_r(maze, CURSOR_RIGHT(12) "Time left: %d  ", end_time - time(NULL));
+        print_after_maze_r(maze, CURSOR_RIGHT(20) "Time left: %d  ", end_time - time(NULL));
         print_debug("Time left: %d\n", end_time - time(NULL));       
     } while (true);
     //notify the mouse and cat that the game is over, just a flag:
@@ -179,7 +183,7 @@ void mouse_routine(Maze maze){
     Animal mouse;
     mouse.pos = (Coords){0, 0};
     mouse.icon = "🐁";
-    mouse.time_to_sleep = 800; //ms
+    mouse.time_to_sleep = 400; //ms
     mouse.maze=maze;
     mouse.id=1;
     animal_routine(&mouse);
@@ -191,7 +195,7 @@ void cat_routine(Maze maze){
     Animal cat;
     cat.pos = maze_SE_corner(maze);
     cat.icon = "🐈";
-    cat.time_to_sleep = 1000; //ms
+    cat.time_to_sleep = 300; //ms
     cat.maze=maze;
     cat.id=2;
     animal_routine(&cat);
@@ -217,8 +221,7 @@ int main(int argc, char** argv) {
     if (rank == 0) {
         print_maze_r(final_maze); // Print the final maze
 
-        //debug:
-        print_jump_maze(final_maze, 2);
+        if (DEBUG) print_jump_maze(final_maze, 2);
 
     }
   

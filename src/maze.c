@@ -93,7 +93,7 @@ void print_maze_r(Maze m) {
 
 void print_after_maze_r(Maze m, const char* format, ...) {
     printf(SAVE_CURSOR_POS);
-    print_jump_maze(m, 1);
+    print_jump_maze(m, 0);
 
     va_list args;
     va_start(args, format);

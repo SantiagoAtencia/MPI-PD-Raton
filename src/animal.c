@@ -100,7 +100,7 @@ void move_animal_randomly(Animal* p_animal){
 
     // print the new position
     //print_char_in_maze_r(p_animal->maze, p_animal->pos, p_animal->icon);
-    print_debug("Animal %d moved to (%d,%d)\n", p_animal->id, p_animal->pos.x, p_animal->pos.y);
+    //print_debug("Animal %d moved to (%d,%d)\n", p_animal->id, p_animal->pos.x, p_animal->pos.y);
 };
 
 
