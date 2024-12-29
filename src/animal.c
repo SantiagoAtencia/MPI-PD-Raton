@@ -77,31 +77,26 @@ Direction _animal_fix_dir(Animal animal, Direction dir){
     }
     printf("Error: no valid direction found\n");
     exit(1); // halt the program
-        // if that happens, it means that the animal is stuck in a dead end
+        // if that happens, it means that the animal is stuck in a island path
 }
 
 
 /** 
  * Randomly move the animal
- * @param a: the animal to move
- * @param m: the maze
- * 
+ * @param p_animal: the animal to move
+ *  * 
  * The current direction has more probability to be chosen 
  * 
  */
 void move_animal_randomly(Animal* p_animal){
-    // print spaces to erase the previous position
-    //print_char_in_maze_r(p_animal->maze, p_animal->pos, "  ");
-
+   
     // choose random direction, based on the current direction:
     Direction new_dir= ramdom_dir_from(p_animal->last_dir);
     new_dir= _animal_fix_dir(*p_animal,new_dir);// fix the direction if it is not valid
     p_animal->pos = cell_step_towards(p_animal->pos, new_dir); // move the animal
     p_animal->last_dir = new_dir; // update the last direction
 
-    // print the new position
-    //print_char_in_maze_r(p_animal->maze, p_animal->pos, p_animal->icon);
-    //print_debug("Animal %d moved to (%d,%d)\n", p_animal->id, p_animal->pos.x, p_animal->pos.y);
+    print_debug("Animal %d moved to (%d,%d)\n", p_animal->id, p_animal->pos.x, p_animal->pos.y);
 };
 
 
@@ -109,14 +104,14 @@ void move_animal_randomly(Animal* p_animal){
 /**
  * The animal routine
  * 
- * @param animal: the animal to move, in its initial position
- * @param maze: the maze
+ * @param p_animal: the animal to move
  * 
  * The animal will move randomly in the maze
  * Must be called only in a rank
  * Requires the animal.maze to be with the correct dimensions,
  *  but the cells unallocated, because the maze will be received from rank 0
- *  and allocated in this function
+ *  and will be allocated in this function
+ *  frees the local maze at the end
  * 
  */
 void animal_routine(Animal* p_animal){

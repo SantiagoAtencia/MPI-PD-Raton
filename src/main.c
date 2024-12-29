@@ -37,7 +37,7 @@ void print_debug(const char* format, ...) {
 }
 
 void print_usage() {
-    printf("Usage: mpirun -np <num_processes> ./maze <width> <height>\n");
+    printf("Usage: mpirun -np <num_processes> ./maze_race <width> <height>\n");
     printf("Both dimensions must be between %d and %d.\n", MIN_DIM, MAX_DIM);
     printf("Height must be a multiple of the number of processes.\n");
 }
@@ -162,7 +162,10 @@ void game_routine(Maze maze){
         }
         //print the time left TODO: print the time left
         
-        print_after_maze_r(maze, CURSOR_RIGHT(20) "Time left: %d  ", end_time - time(NULL));
+        print_after_maze_r(maze, CURSOR_RIGHT(20) "mouse:(%d,%d) cat:(%d,%d) Time left: %d s  ", 
+             mouse_pos.x, mouse_pos.y,
+             cat_pos.x, cat_pos.y,
+             end_time - time(NULL));
         print_debug("Time left: %d\n", end_time - time(NULL));       
     } while (true);
     //notify the mouse and cat that the game is over, just a flag:
@@ -183,7 +186,7 @@ void mouse_routine(Maze maze){
     Animal mouse;
     mouse.pos = (Coords){0, 0};
     mouse.icon = "🐁";
-    mouse.time_to_sleep = 400; //ms
+    mouse.time_to_sleep = 200; //ms
     mouse.maze=maze;
     mouse.id=1;
     animal_routine(&mouse);
@@ -195,7 +198,7 @@ void cat_routine(Maze maze){
     Animal cat;
     cat.pos = maze_SE_corner(maze);
     cat.icon = "🐈";
-    cat.time_to_sleep = 500; //ms
+    cat.time_to_sleep = 100; //ms
     cat.maze=maze;
     cat.id=2;
     animal_routine(&cat);

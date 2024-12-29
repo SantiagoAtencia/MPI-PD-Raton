@@ -18,8 +18,8 @@ INCLUDES = -I$(INC_DIR)
 NP = 4
 
 # Maze dimensions:
-ROWS = 22
-COLS = 8
+ROWS = 16
+COLS = 32
 
 # Default target
 .PHONY: all
@@ -42,7 +42,7 @@ install:
 # Run target
 .PHONY: run
 run: $(EXEC)
-	mpirun --oversubscribe -np $(NP) ./$(EXEC) $(ROWS) $(COLS)
+	mpirun --oversubscribe -np $(NP) ./$(EXEC) $(COLS) $(ROWS)
 
 # Clean target
 .PHONY: clean

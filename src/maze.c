@@ -85,6 +85,9 @@ void print_maze_r(Maze m) {
     }
     printf("maze size: %d x %d\n", m.height, m.width);
     printf(RESTORE_CURSOR_POS);
+    // print cheese path at NE corner:
+    print_char_in_maze_r(m, maze_NE_corner(m), "🧀");
+    
 
 }
 

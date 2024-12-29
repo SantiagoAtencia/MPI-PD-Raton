@@ -24,16 +24,14 @@ typedef enum Direction {
  * Randomly choose a direction, 
  * with a probability of PROBABILITY_SAME_DIRECTION to keep the same direction
  */
-#define PROBABILITY_SAME_DIRECTION 0.85
+#define PROBABILITY_SAME_DIRECTION 0.95
 Direction ramdom_dir_from(Direction last_dir);
 
 // calculate the next coordinate, 1 step towrds direction
 // Does not check anythig.
 Coords cell_step_towards(Coords cell, Direction dir);
 
-
-
-
+//////////////////////////////////////////////////////////////////////////////////
 // Animal "class":
 typedef struct Animal {
     int id;
