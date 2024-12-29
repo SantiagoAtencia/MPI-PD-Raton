@@ -8,6 +8,7 @@
 #include <time.h>
 
 
+
 #define MIN_DIM 4
 #define MAX_DIM 100
 #define DEBUG 0
@@ -236,6 +237,7 @@ int main(int argc, char** argv) {
     if (rank == 0) game_routine(final_maze);
     if (rank == 1) mouse_routine(final_maze);
     if (rank == 2) cat_routine(final_maze);
+
 
 
     //free the memory allocated for the final maze:
