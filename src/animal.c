@@ -41,9 +41,9 @@ Coords cell_step_towards(Coords cell, Direction dir){
  * with a probability of PROBABILITY_SAME_DIRECTION to keep the same direction
  */
 Direction ramdom_dir_from(Direction last_dir){
-    // generate a random number between 0 and 1
+    // generate a random number between 0 and 256*256
     int r = rand() % (256*256);
-    if (r < PROBABILITY_SAME_DIRECTION * 256*256){
+    if (r < (PROBABILITY_SAME_DIRECTION * 256*256)){
         return last_dir;
     }
     else{
@@ -73,7 +73,7 @@ Direction _animal_fix_dir(Animal animal, Direction dir){
     for (int i = 0; i < 8; i++){
         new_pos = cell_step_towards(animal.pos, dir);
         if (is_path(animal.maze, new_pos)) return dir;
-        dir = (Direction) ((dir + 1) % 8);  // try the next direction  
+        dir = (Direction) ((dir - 1) % 8);  // try the next direction  
     }
     printf("Error: no valid direction found\n");
     exit(1); // halt the program
@@ -97,6 +97,7 @@ void move_animal_randomly(Animal* p_animal){
     Direction new_dir= ramdom_dir_from(p_animal->last_dir);
     new_dir= _animal_fix_dir(*p_animal,new_dir);// fix the direction if it is not valid
     p_animal->pos = cell_step_towards(p_animal->pos, new_dir); // move the animal
+    p_animal->last_dir = new_dir; // update the last direction
 
     // print the new position
     //print_char_in_maze_r(p_animal->maze, p_animal->pos, p_animal->icon);

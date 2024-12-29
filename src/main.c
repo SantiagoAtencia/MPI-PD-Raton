@@ -195,7 +195,7 @@ void cat_routine(Maze maze){
     Animal cat;
     cat.pos = maze_SE_corner(maze);
     cat.icon = "🐈";
-    cat.time_to_sleep = 300; //ms
+    cat.time_to_sleep = 500; //ms
     cat.maze=maze;
     cat.id=2;
     animal_routine(&cat);

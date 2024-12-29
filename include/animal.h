@@ -24,7 +24,7 @@ typedef enum Direction {
  * Randomly choose a direction, 
  * with a probability of PROBABILITY_SAME_DIRECTION to keep the same direction
  */
-#define PROBABILITY_SAME_DIRECTION 0.9
+#define PROBABILITY_SAME_DIRECTION 0.85
 Direction ramdom_dir_from(Direction last_dir);
 
 // calculate the next coordinate, 1 step towrds direction
