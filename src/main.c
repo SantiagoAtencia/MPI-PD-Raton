@@ -32,7 +32,6 @@ void print_debug(const char* format, ...) {
         va_start(args, format);
         vprintf(format, args);
         va_end(args);
-        
     }
 }
 
@@ -121,7 +120,7 @@ void game_routine(Maze maze){
     print_debug("Maze sent to mouse and cat\n");
     // start a "timer"
     int start_time = time(NULL); //current time
-    int end_time = start_time + 10; //10 seconds
+    int end_time = start_time + 100; //10 seconds
    
     Coords mouse_pos={0,0};
     Coords cat_pos=maze_SE_corner(maze);
@@ -182,9 +181,6 @@ void game_routine(Maze maze){
     printf("Game over! %s\n", end_cause);
 }
 
-
-
-
 // pass a unallocated maze to the function, but with correct dimensions
 // call only in a single rank, not 0
 void mouse_routine(Maze maze){
@@ -203,7 +199,7 @@ void cat_routine(Maze maze){
     Animal cat;
     cat.pos = maze_SE_corner(maze);
     cat.icon = "🐈";
-    cat.time_to_sleep = 500; //ms
+    cat.time_to_sleep = 250; //ms
     cat.maze=maze;
     cat.id=2;
     animal_routine(&cat);
