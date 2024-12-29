@@ -42,6 +42,8 @@ void print_after_maze_r(Maze m, const char* format, ...);    //prints the string
 void print_jump_maze(Maze m, int extre_lines);      //jump to extre_lines after the maze
 void print_char_in_maze_r(Maze m, Coords c, const char* ch); //print a character in the maze and return cursor
 
+void correct_maze(Maze* m);
+
 /**
  *  7 0 1
  *   ↖↑↗

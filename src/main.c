@@ -126,8 +126,7 @@ void game_routine(Maze maze){
     Coords mouse_pos={0,0};
     Coords cat_pos=maze_SE_corner(maze);
 
-    print_char_in_maze_r(maze, maze_NE_corner(maze), "  "); //erase the previous position
-    print_char_in_maze_r(maze, maze_NE_corner(maze), "🧀"); //print the new position
+    print_char_in_maze_r(maze, maze_NE_corner(maze), "🧀");
 
     MPI_Status status;
     Coords received_pos;
@@ -143,9 +142,15 @@ void game_routine(Maze maze){
             mouse_pos = received_pos;
             print_debug("Mouse position received (%d,%d)\n", mouse_pos.x, mouse_pos.y);
         } else if (status.MPI_SOURCE == 2){
-            print_char_in_maze_r(maze, cat_pos, "  "); //erase the previous position
+            if(!Coords_equal(cat_pos, maze_NE_corner(maze))){
+                print_char_in_maze_r(maze, cat_pos, "  "); //erase the previous position
+            }else{
+                print_char_in_maze_r(maze, cat_pos, "🧀"); //erase the previous position
+            }
             print_char_in_maze_r(maze, received_pos, "🐈"); //print the new position
             cat_pos = received_pos;
+
+
             print_debug("Cat position received (%d,%d)\n", cat_pos.x, cat_pos.y);
         }
         //check if the mouse is in the same position as the cat
