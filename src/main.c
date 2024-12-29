@@ -126,6 +126,9 @@ void game_routine(Maze maze){
     Coords mouse_pos={0,0};
     Coords cat_pos=maze_SE_corner(maze);
 
+    print_char_in_maze_r(maze, maze_NE_corner(maze), "  "); //erase the previous position
+    print_char_in_maze_r(maze, maze_NE_corner(maze), "🧀"); //print the new position
+
     MPI_Status status;
     Coords received_pos;
     char* end_cause;
