@@ -222,6 +222,7 @@ int main(int argc, char** argv) {
     Maze final_maze = merge_sub_mazes(sub_maze, rank, num_procs);   // Only rank 0 will have the final maze
 
     if (rank == 0) {
+        correct_maze(&final_maze);
         print_maze_r(final_maze); // Print the final maze
 
         if (DEBUG) print_jump_maze(final_maze, 2);
