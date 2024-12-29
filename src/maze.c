@@ -3,12 +3,19 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 #define MAZE_COLORS "\033[38;2;255;255;255;48;2;32;64;60m"
 #define RESET_COLOR "\033[0m"
 #define SAVE_CURSOR_POS "\0337"
 #define RESTORE_CURSOR_POS "\0338"
+#define CURSOR_RIGHT(n) "\033[" #n "C"
 
+
+// Coords type:
+bool Coords_equal(Coords a, Coords b) {
+    return a.x == b.x && a.y == b.y;
+}
 
 // function that generates a ramdon result 0 or 1.
 // result 1 with x (0..1) probability
@@ -62,12 +69,12 @@ Coords maze_NE_corner(Maze m) {
 }
 /**
  * Print the maze to the console
- * the cursor will be moved back to the top of the maze after printing
+ * the cursor will be returned to the top of the maze after printing
  * 
  * NOTICE: each cell is printed with 2 spaces.
  * 
  */
-void print_maze(Maze m) {
+void print_maze_r(Maze m) {
     printf(SAVE_CURSOR_POS);
     for (int i = 0; i < m.height; i++) {
         printf(MAZE_COLORS);
@@ -81,20 +88,31 @@ void print_maze(Maze m) {
 
 }
 
-// moves the cursor to the next line below the maze
-void print_jump_maze(Maze m){
-    printf("\033[%dB", m.height + 1);
+// Print the string after the maze and return the cursor to the top of the maze
+
+
+void print_after_maze_r(Maze m, const char* format, ...) {
+    printf(SAVE_CURSOR_POS);
+    print_jump_maze(m, 1);
+
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+
+    printf(RESTORE_CURSOR_POS);
 }
 
-//print a char at the given position
-// it is suposed the cursor is at the top of the maze
-// the cursor will be moved back to the top of the maze after printing
-// NOTICE: each cell is printed with 2 spaces:
-// ch can be a string with 2 characters
+// moves the cursor to the next line below the maze
+// extra_lines: number of extra lines to move the cursor
+void print_jump_maze(Maze m,int extra_lines){
+    printf("\033[%dB", m.height + extra_lines);
+}
+
 
 /**
  * Print a character at the given position in the maze
- * the cursor will be moved back to the top of the maze after printing
+ * the cursor will be returned to the top of the maze after printing
  * It is supposed the cursor is at the top of the maze
  * 
  * NOTICE: each cell is printed with 2 spaces.
@@ -102,7 +120,7 @@ void print_jump_maze(Maze m){
  *  or a unicode wide character, e.g.: "🐈"
  * 
  */
-void print_char_in_maze(Maze m, Coords c, const char* ch) {
+void print_char_in_maze_r(Maze m, Coords c, const char* ch) {
     printf(SAVE_CURSOR_POS);
     if (c.x > 0) printf("\033[%dC", c.x*2); // each cell is printed with 2 spaces
     if (c.y > 0) printf("\033[%dB", c.y);

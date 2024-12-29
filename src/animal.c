@@ -91,7 +91,7 @@ Direction _animal_fix_dir(Animal animal, Direction dir){
  */
 void move_animal_randomly(Animal* p_animal){
     // print spaces to erase the previous position
-    print_char_in_maze(p_animal->maze, p_animal->pos, "  ");
+    //print_char_in_maze_r(p_animal->maze, p_animal->pos, "  ");
 
     // choose random direction, based on the current direction:
     Direction new_dir= ramdom_dir_from(p_animal->last_dir);
@@ -99,21 +99,11 @@ void move_animal_randomly(Animal* p_animal){
     p_animal->pos = cell_step_towards(p_animal->pos, new_dir); // move the animal
 
     // print the new position
-    print_char_in_maze(p_animal->maze, p_animal->pos, p_animal->icon);
+    //print_char_in_maze_r(p_animal->maze, p_animal->pos, p_animal->icon);
+    print_debug("Animal %d moved to (%d,%d)\n", p_animal->id, p_animal->pos.x, p_animal->pos.y);
 };
 
 
-//mouse routine:
-// receive the maze
-// initialize the position of the mouse
-// loop:
-//    wait for a while, constant time
-//    check if a there is a message from the game routine
-//      if the message is to stop: break the loop
-//    update the position of the mouse
-//    send the new position to the game routine
-
-//cat routine: idem.
 
 /**
  * The animal routine
@@ -143,8 +133,9 @@ void animal_routine(Animal* p_animal){
         usleep(p_animal->time_to_sleep*1000); // wait for a while, constant time
         //check if a there is a message from the game routine mpi
         
-        MPI_Iprobe(0, 0, MPI_COMM_WORLD, &flag, &status);
+        MPI_Iprobe(0, MPI_ANY_TAG, MPI_COMM_WORLD, &flag,  MPI_STATUS_IGNORE);
         if (flag){
+            print_debug("Animal %d received a message from game routine\n", p_animal->id);
             break; //just break the loop, because is the only message that can be received
         }
 
