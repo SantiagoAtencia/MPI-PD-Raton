@@ -17,7 +17,7 @@ mpicc -I include -o maze_race src/*.c
 Ejecución manual:
 
 ```
-mpirun -np \<num_processes> ./maze_race \<width> \<height> \<play time>
+mpirun -np <num_processes> ./maze_race <width> <height> <play time>
 ```
 
 La versión actual:
