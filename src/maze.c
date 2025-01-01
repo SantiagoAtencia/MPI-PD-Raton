@@ -5,12 +5,6 @@
 #include <stdbool.h>
 #include <stdarg.h>
 
-#define MAZE_COLORS "\033[38;2;255;255;255;48;2;32;64;60m"
-#define RESET_COLOR "\033[0m"
-#define SAVE_CURSOR_POS "\0337"
-#define RESTORE_CURSOR_POS "\0338"
-#define CURSOR_RIGHT(n) "\033[" #n "C"
-
 
 // Coords type:
 bool Coords_equal(Coords a, Coords b) {
@@ -42,6 +36,9 @@ Maze create_maze(int width, int height) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(1);
     }
+
+    m.printable = (width <= MAX_WIDTH_PRINTABLE_MAZE && height <= MAX_HEIGHT_PRINTABLE_MAZE); 
+    m.printed_height = (m.printable)? height: NO_PRINTABLE_MAZE_HEIGHT;
     return m;
 }
 
@@ -75,14 +72,24 @@ Coords maze_NE_corner(Maze m) {
  * 
  */
 void print_maze_r(Maze m) {
+    // if too big, print a message in a box
+
     printf(SAVE_CURSOR_POS);
-    for (int i = 0; i < m.height; i++) {
+    if (m.printable){
+        for (int i = 0; i < m.height; i++) {
         printf(MAZE_COLORS);
-        for (int j = 0; j < m.width; j++) {
-            printf ("%s", m.cells[i * m.width + j] ? "  ":"╬╬");
+            for (int j = 0; j < m.width; j++) {
+                printf ("%s", m.cells[i * m.width + j] ? "  ":"╬╬");
+            }
+        printf(RESET_COLOR "\n");
         }
+    }else{
+        printf(MAZE_COLORS);
+        printf("\n Maze too big to print. \n Maximum printable: %d,%d\n\n",
+            MAX_WIDTH_PRINTABLE_MAZE,MAX_HEIGHT_PRINTABLE_MAZE);
         printf(RESET_COLOR "\n");
     }
+    
     printf("maze size: %d x %d\n", m.height, m.width);
     printf(RESTORE_CURSOR_POS);
 
@@ -106,7 +113,7 @@ void print_after_maze_r(Maze m, const char* format, ...) {
 // moves the cursor to the next line below the maze
 // extra_lines: number of extra lines to move the cursor
 void print_jump_maze(Maze m,int extra_lines){
-    printf("\033[%dB", m.height + extra_lines);
+    printf("\033[%dB", m.printed_height+ extra_lines);
 }
 
 
@@ -121,6 +128,8 @@ void print_jump_maze(Maze m,int extra_lines){
  * 
  */
 void print_char_in_maze_r(Maze m, Coords c, const char* ch) {
+    if (!m.printable) return;
+
     printf(SAVE_CURSOR_POS);
     if (c.x > 0) printf("\033[%dC", c.x*2); // each cell is printed with 2 spaces
     if (c.y > 0) printf("\033[%dB", c.y);

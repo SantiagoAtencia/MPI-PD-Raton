@@ -12,6 +12,10 @@
 #define RESTORE_CURSOR_POS "\0338"
 #define CURSOR_RIGHT(n) "\033[" #n "C"
 
+#define MAX_WIDTH_PRINTABLE_MAZE 60
+#define MAX_HEIGHT_PRINTABLE_MAZE 24
+#define NO_PRINTABLE_MAZE_HEIGHT 5 // lines to skip if maze is too big
+
 // Coords type:
 typedef struct Coords {
     int x;
@@ -25,6 +29,8 @@ typedef struct Maze {
     int width;
     int height;
     char* cells; // Contiguous memory for 2D array
+    bool printable;
+    int printed_height;
 } Maze;
 
 

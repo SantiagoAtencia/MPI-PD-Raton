@@ -9,7 +9,8 @@
             "defines": [],
             "compilerPath": "/usr/bin/mpicc",
             "cppStandard": "c++14",
-            "intelliSenseMode": "linux-gcc-x64"
+            "intelliSenseMode": "linux-gcc-x64",
+            "cStandard": "gnu11"
         }
     ],
     "version": 4

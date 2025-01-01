@@ -8,23 +8,13 @@
 #include <time.h>
 
 
-
 #define MIN_DIM 4
 #define MAX_DIM 100
 #define DEBUG 0
 
 int num_procs, rank, play_time; //global
 
-//☠🐁🐁🐁🐁🐭🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
-//╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
-//╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬🐈╬╬╬╬🐁╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
-//xxxxxxxxxxxxxxxx🐈xxxx╬╬    ╬╬╬╬╬╬╬  ╬╬╬╬╬╬
-// ██████
-// █    █
-// ████  ▓▓▓
-// █   ▓█ ▓▓▓▓🐁 █🐁
-// ███▓▓▓▓ ▓ ▓ █ █ █ ▓ ▓▓▓▓▓
-//🐁🐁🐁🐁🐁🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
+
 
 void print_debug(const char* format, ...) {
     if (DEBUG) {
@@ -46,12 +36,12 @@ void print_usage() {
  * Reads and checks the input arguments.
  */
 void read_and_check_input(int argc, char** argv, int rank, int num_procs, int* width, int* height, int* play_time) {
-    int valid_input = 1;
+    bool valid_input = true;
 
     if (rank == 0) {
         if (argc != 4) {
             print_usage();
-            valid_input = 0;
+            valid_input = false;
         } else {
             char *endptr1, *endptr2, *endptr3;
             *width = strtol(argv[1], &endptr1, 10);
@@ -63,14 +53,14 @@ void read_and_check_input(int argc, char** argv, int rank, int num_procs, int* w
                 *height < MIN_DIM || *height > MAX_DIM || 
                 *height % num_procs != 0) {
                 print_usage();
-                valid_input = 0;
+                valid_input = false;
             }
         }
-        printf("Building a maze of dimensions %d x %d with %d processes.\n", *height, *width, num_procs);
+        printf("Building a maze of dimensions %d x %d with %d processes.\n", *width, *height, num_procs);
     }
 
     // Broadcast the validity of the input to all processes:
-    MPI_Bcast(&valid_input, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&valid_input, 1, MPI_C_BOOL , 0, MPI_COMM_WORLD);
     if (!valid_input) {
         MPI_Finalize();
         exit(1);
@@ -171,7 +161,10 @@ void game_routine(Maze maze){
         }
         //print the time left TODO: print the time left
         
-        print_after_maze_r(maze, CURSOR_RIGHT(20) "Time left: %d  ", end_time - time(NULL));
+        print_after_maze_r(maze, CURSOR_RIGHT(20) "Time left: %d  Mouse:(%d,%d) Cat:(%d,%d)   ",
+             end_time - time(NULL),
+             mouse_pos.x,mouse_pos.y,
+             cat_pos.x, cat_pos.y);
         print_debug("Time left: %d\n", end_time - time(NULL));       
     } while (true);
     //notify the mouse and cat that the game is over, just a flag:
@@ -249,3 +242,16 @@ int main(int argc, char** argv) {
     MPI_Finalize();
     return 0;
 }
+
+
+
+//☠🐁🐁🐁🐁🐭🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
+//╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
+//╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬🐈╬╬╬╬🐁╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬╬
+//xxxxxxxxxxxxxxxx🐈xxxx╬╬    ╬╬╬╬╬╬╬  ╬╬╬╬╬╬
+// ██████
+// █    █
+// ████  ▓▓▓
+// █   ▓█ ▓▓▓▓🐁 █🐁
+// ███▓▓▓▓ ▓ ▓ █ █ █ ▓ ▓▓▓▓▓
+//🐁🐁🐁🐁🐁🐭🐭🐭🐈🐈🐱🐱🕱🕱☠
