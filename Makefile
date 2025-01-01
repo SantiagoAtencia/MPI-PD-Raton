@@ -22,6 +22,8 @@ NP = 4
 # Maze dimensions:
 COLS = 16
 ROWS = 12
+
+# Game timeout:
 TIME = 20
 
 # Default target
