@@ -18,14 +18,19 @@ js.alarcon09@uma.es
 ___
 ## Maze-race
 
+### _Inicio rápido:_ 
+Abrir este [entorno](https://automatic-space-meme-6xw9p799q6g24r4.github.dev/) y en el terminal ejecutar `make run`
+___
 
-Programa desarrollado en _Codespaces_, no es necesario configurar nada localmente. Está asociado a un repositorio GitHUB. Si se quiere, se puede copiar a un linux local.
+
+
+Programa desarrollado en _Codespaces_, no es necesario configurar nada localmente. Está asociado a un repositorio GitHUB. Si se quiere, se puede copiar a un linux local (git pull).
 
 Repositorio gitHUB: https://github.com/SantiagoAtencia/MPI-PD-Raton
 
 Entorno virtual Codespaces: https://automatic-space-meme-6xw9p799q6g24r4.github.dev/
 
-Tiene un _Makefile_ y con `make run` se compila y ejecuta automáticame.
+El pruyecto tiene un _Makefile_. Con `make run` se compila y ejecuta automáticame.
 En el _Makefile_ se pueden cambiar los parámetros de tamaño y tiempo.
 
 Con `make install` se instala el entorno si fuera necesario. En el codespaces ya está todo instalado, lógicamente.
@@ -56,7 +61,7 @@ En la parte de la carrera hay 3 procesos:
  - rank 0. Es el controlador del juego
  - rank 1. Ratón
  - rank 2. Gato
-
+### Algoritmos
 *El controlador del juego:*
 ```  
   - Le pasa el laberinto a los animales.
